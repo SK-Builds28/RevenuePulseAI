@@ -51,9 +51,8 @@ that no fabricated metrics, user research or pilot evidence appears in the submi
   are included.
 - No real-world model performance, product-market fit or willingness to pay is claimed.
 
-## Placeholders to complete before submission
+## Submission details
 
-- **GitHub ID:** [ADD BEFORE SUBMISSION]
-- **Repository URL:** [ADD BEFORE SUBMISSION]
-- **Date:** [ADD BEFORE SUBMISSION]
-- **Signature:** [ADD IF REQUIRED BY THE COURSE]
+- **GitHub ID:** SK-Builds28
+- **Repository URL:** https://github.com/SK-Builds28/RevenuePulseAI
+- **Date:** 24 November 2026

@@ -204,7 +204,7 @@ versions, and attach a verification artifact (test output, commit hash) to each 
 | Ethics / Risk | Done | `submission/04_Ethics_Governance_Risk.md` | No fairness testing possible |
 | AI Collaboration Log | Done | `submission/05_AI_Collaboration_Log.md` | Some tool names unverifiable |
 | AI Self-Evaluation | Done | This document | Self-assessed, not external |
-| Individual Contribution Statement | Done | `submission/07_Individual_Contribution_Statement.md` | Signatures/IDs placeholders |
+| Individual Contribution Statement | Done | `submission/07_Individual_Contribution_Statement.md` | IDs, repository URL and date filled; signature pending |
 | PlantUML workflows | Done | `diagrams/initial_workflow.puml`, `final_workflow.puml` | PNG only if tooling exists |
 | Presentation deck | Done | `presentation/Final_Presentation.md` (+ PPTX if generated) | Visual polish |
 | README landing page | Done | `README.md` | — |

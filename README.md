@@ -337,4 +337,5 @@ business model, risk and governance, final review.
 AI tools assisted with planning, drafting, coding and review; final judgement,
 verification and submission responsibility remained with the student.
 
-**GitHub ID:** [ADD BEFORE SUBMISSION]
+**GitHub ID:** [SK-Builds28](https://github.com/SK-Builds28)
+**Repository:** https://github.com/SK-Builds28/RevenuePulseAI

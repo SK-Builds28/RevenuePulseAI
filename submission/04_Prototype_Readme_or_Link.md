@@ -32,11 +32,11 @@ Detail, Human Review.
 
 ## Repository
 
-[GitHub link placeholder - add the public repository URL before submission]
+https://github.com/SK-Builds28/RevenuePulseAI
 
 ## Live Demo
 
-Not deployed. Optional placeholder: [demo URL - none].
+Not deployed. Demo URL: none.
 
 The prototype runs locally; the model metric artifact and review database stay on the
 student's machine and are not hosted anywhere.
