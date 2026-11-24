@@ -1,0 +1,29 @@
+@startuml
+title RevenuePulse AI - Initial (pre-AI) account review workflow
+
+skinparam defaultFontName Arial
+skinparam swimlaneWidth 220
+skinparam wrapWidth 220
+
+|Sales Manager|
+start
+:Export / view account data\n(billing + CRM + product reports);
+:Manually inspect revenue;\n:Manually inspect engagement;
+:Manually inspect activity and\nsupport history;
+:Identify risky accounts\n(judgement, recency bias,\nspreadsheet filters);
+if (Which accounts need attention?) then (personal judgement)
+  :Decide outreach or no action;
+else (not reviewed this quarter)
+  :Account left unreviewed;
+endif
+:Record follow-up in notes\nor CRM task;
+stop
+
+note right of |Sales Manager|
+  No prioritisation model.
+  No consistent definition of "material decline".
+  Review effort follows recency and familiarity.
+  A decline is often noticed after it appears in revenue reporting.
+end note
+
+@enduml

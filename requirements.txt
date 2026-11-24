@@ -1,0 +1,9 @@
+pandas==2.2.3
+numpy==2.1.3
+scikit-learn==1.6.1
+PyYAML==6.0.2
+pytest==8.3.4
+# Phase 3 prototype (review queue UI). Not required for training or evaluation.
+streamlit==1.67.0
+# Optional: only used to regenerate presentation/RevenuePulse_AI_Final_Presentation.pptx
+python-pptx==1.0.2

@@ -1,0 +1,70 @@
+@startuml
+title RevenuePulse AI - Final workflow with human-in-the-loop review
+
+skinparam defaultFontName Arial
+skinparam swimlaneWidth 210
+skinparam wrapWidth 230
+
+|Sales Manager|
+start
+:Select review date (quarter-end snapshot)\nor upload account-month data;
+
+|RevenuePulse AI|
+:Data validation\n(required fields, dates, duplicates);
+if (Data valid?) then (no)
+  :Reject with readable error;\nrequest corrected extract;
+  |Sales Manager|
+  stop
+else (yes)
+  |RevenuePulse AI|
+  :Feature generation\n(point-in-time only, no future data);
+  if (Model available?) then (no)
+    |RevenuePulse AI|
+    :Controlled error:\nmanual review only;
+    |Sales Manager|
+    :Review accounts manually;
+    stop
+  else (yes)
+    |RevenuePulse AI|
+    :AI risk prediction\n(histogram gradient boosting);
+    :Build ranked review queue\n(risk probability + band);
+    :Risk explanation\n(rule-based reason codes);
+    :Suggested next action\n(transparent rules, no LLM);
+  endif
+endif
+
+|Sales Manager|
+if (Risk band?) then (low)
+  :Monitor - no immediate action;
+else (medium)
+  :Review recommended\n(advisory, not definitive);
+else (high)
+  :High-priority review;
+endif
+
+:Inspect account evidence\n(revenue, trend, engagement, activity);
+
+|Human Review|
+if (Decision?) then (Accept)
+  :Accept AI suggestion;
+elseif (Edit)
+  :Amend recommendation\n+ optional note;
+else (Dismiss)
+  :Dismiss suggestion\n+ optional note;
+endif
+
+|Audit Log|
+:Save decision\n(timestamp, account, snapshot date,\nrisk score, AI suggestion, decision,\nedited text, reviewer note);
+
+|Sales Manager|
+:Human decides any follow-up\noutside the system;
+stop
+
+note right of |Human Review|
+  No automated customer contact.
+  No pricing or offer changes.
+  No CRM write-back.
+  Human approval is mandatory.
+end note
+
+@enduml
