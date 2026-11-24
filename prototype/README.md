@@ -48,6 +48,11 @@ This keeps the queue, recommendation and audit rules unit-testable without Strea
   score is a prioritisation signal, not a churn prediction.
 - No authentication, no roles, no multi-user separation: academic MVP limitation.
 
+## Screenshots
+
+Captures of all four pages, the reason codes and the audit log live in
+[`../screenshots/`](../screenshots/).
+
 ## Tests
 
 ```powershell

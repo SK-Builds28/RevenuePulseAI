@@ -85,9 +85,28 @@ if either is missing it shows a controlled error with the command to rebuild it.
 8. Try **Dismiss** on a medium-risk account with the note "known seasonal billing" to
    show that overrides are recorded.
 
-Suggested screenshots for the appendix (student to capture manually):
-`Appendix/Screenshots/01_dashboard.png`, `02_queue.png`, `03_account_detail.png`,
-`04_human_review.png`, `05_review_log_export.png`.
+## Screenshots
+
+Captured from the running prototype at review date 2025-09-30 (see `screenshots/` at the
+repository root). No data was edited for the captures; the review log contains the two
+demo decisions described in the demo steps.
+
+| File | Shows |
+|---|---|
+| `01_dashboard.png` | Executive dashboard: 370 accounts reviewed, 6 high / 29 medium / 335 low, model in use, synthetic-data disclaimer |
+| `02_queue.png` | Ranked review queue with risk probability and band, revenue, trend, engagement, activity recency, primary reason and review status |
+| `03_account_detail.png` | Account detail for the top-ranked account (SYN-0317): probability 0.869, High band, monthly revenue history |
+| `03b_account_evidence.png` | Commercial signals, three reason codes and the rule-based next-best-action with its evidence |
+| `04_human_review.png` | Human review: AI suggestion, Accept decision with reviewer note, saved confirmation and the review log |
+| `05_review_log_export.png` | Dismiss decision on a medium-risk account, two-row audit log and CSV export control |
+
+![Executive dashboard](../screenshots/01_dashboard.png)
+
+![Review queue](../screenshots/02_queue.png)
+
+![Account detail](../screenshots/03_account_detail.png)
+
+![Human review and audit log](../screenshots/04_human_review.png)
 
 ## Known Limitations of the Prototype
 

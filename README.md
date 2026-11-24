@@ -130,6 +130,11 @@ A four-page Streamlit application using the frozen model artifact:
 No authentication, no CRM integration, no LLM, no automated action. See
 [`prototype/README.md`](prototype/README.md).
 
+Captured screens of all four pages, the reason codes and the audit log are in
+[`screenshots/`](screenshots/).
+
+![Review queue](screenshots/02_queue.png)
+
 ## Demo Workflow
 
 1. Launch the app and open **Review Queue**.
@@ -168,7 +173,8 @@ RevenuePulse_AI/
 ├── docs/                         # data dictionary, build notes, model card, evaluation
 ├── submission/                   # final MBA submission artifacts
 ├── presentation/                 # 11-slide deck (Markdown + PPTX)
-├── diagrams/                     # PlantUML workflows
+├── screenshots/                  # prototype captures for the appendix
+├── diagrams/                     # PlantUML workflows (+ rendered PNGs)
 ├── runtime/                      # local review log (git-ignored)
 └── submission/README.md          # requirement-to-file index
 ```
@@ -248,7 +254,7 @@ Evaluation outputs: `artifacts/evaluation/`.
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-131 tests cover configuration guardrails, synthetic generation, data quality, label and
+132 tests cover configuration guardrails, synthetic generation, data quality, label and
 split correctness, leakage (future-revenue mutation), train-only preprocessing, metric
 arithmetic including Precision@K, account-level bootstrap, validation-only selection,
 artifact reload and reproducibility, reason-code integrity, product-layer ranking and
@@ -272,7 +278,8 @@ Optional deck regeneration: `python presentation/build_presentation.py` (require
 | AI self-evaluation | [`submission/06_AI_Self_Evaluation.md`](submission/06_AI_Self_Evaluation.md) |
 | Individual contribution | [`submission/07_Individual_Contribution_Statement.md`](submission/07_Individual_Contribution_Statement.md) |
 | Presentation (11 slides) | [`presentation/Final_Presentation.md`](presentation/Final_Presentation.md) · `RevenuePulse_AI_Final_Presentation.pptx` |
-| Workflow diagrams | [`diagrams/`](diagrams/) |
+| Workflow diagrams | [`diagrams/`](diagrams/) (`.puml` + `.png`) |
+| Prototype screenshots | [`screenshots/`](screenshots/) |
 | Model card | [`docs/Model_Card.md`](docs/Model_Card.md) |
 | Evaluation results | [`docs/Evaluation_Results.md`](docs/Evaluation_Results.md) |
 | Error analysis | [`docs/Error_Analysis.md`](docs/Error_Analysis.md) |

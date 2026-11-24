@@ -7,64 +7,80 @@ skinparam wrapWidth 230
 
 |Sales Manager|
 start
-:Select review date (quarter-end snapshot)\nor upload account-month data;
+:Select review date (quarter-end snapshot)
+or upload account-month data;
 
 |RevenuePulse AI|
-:Data validation\n(required fields, dates, duplicates);
+:Data validation
+(required fields, dates, duplicates);
 if (Data valid?) then (no)
-  :Reject with readable error;\nrequest corrected extract;
+  :Reject with readable error,
+  request corrected extract;
   |Sales Manager|
   stop
 else (yes)
   |RevenuePulse AI|
-  :Feature generation\n(point-in-time only, no future data);
+  :Feature generation
+  (point-in-time only, no future data);
   if (Model available?) then (no)
-    |RevenuePulse AI|
-    :Controlled error:\nmanual review only;
+    :Controlled error:
+    manual review only;
     |Sales Manager|
     :Review accounts manually;
     stop
   else (yes)
     |RevenuePulse AI|
-    :AI risk prediction\n(histogram gradient boosting);
-    :Build ranked review queue\n(risk probability + band);
-    :Risk explanation\n(rule-based reason codes);
-    :Suggested next action\n(transparent rules, no LLM);
+    :AI risk prediction
+    (histogram gradient boosting);
+    :Build ranked review queue
+    (risk probability + band);
+    :Risk explanation
+    (rule-based reason codes);
+    :Suggested next action
+    (transparent rules, no LLM);
   endif
 endif
 
 |Sales Manager|
 if (Risk band?) then (low)
   :Monitor - no immediate action;
-else (medium)
-  :Review recommended\n(advisory, not definitive);
+elseif (medium) then
+  :Review recommended
+  (advisory, not definitive);
 else (high)
   :High-priority review;
 endif
 
-:Inspect account evidence\n(revenue, trend, engagement, activity);
+:Inspect account evidence
+(revenue, trend, engagement, activity);
 
 |Human Review|
 if (Decision?) then (Accept)
   :Accept AI suggestion;
-elseif (Edit)
-  :Amend recommendation\n+ optional note;
+elseif (Edit) then
+  :Amend recommendation
+  + optional note;
 else (Dismiss)
-  :Dismiss suggestion\n+ optional note;
+  :Dismiss suggestion
+  + optional note;
 endif
 
 |Audit Log|
-:Save decision\n(timestamp, account, snapshot date,\nrisk score, AI suggestion, decision,\nedited text, reviewer note);
+:Save decision
+(timestamp, account, snapshot date,
+risk score, AI suggestion, decision,
+edited text, reviewer note);
 
 |Sales Manager|
-:Human decides any follow-up\noutside the system;
+:Human decides any follow-up
+outside the system;
 stop
 
-note right of |Human Review|
+legend right
   No automated customer contact.
   No pricing or offer changes.
   No CRM write-back.
   Human approval is mandatory.
-end note
+endlegend
 
 @enduml

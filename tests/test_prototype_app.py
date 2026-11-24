@@ -22,7 +22,17 @@ def test_prototype_app_imports_and_exposes_main():
         "Human Review",
     )
     assert "synthetic" in module.DISCLAIMER.lower()
-    assert "not a statement that the customer will churn" in module.DISCLAIMER
+    assert "do not confirm customer churn" in module.DISCLAIMER
+
+
+def test_reviewer_decision_values_match_feedback_contract():
+    """The radio labels must map onto the values the audit log accepts."""
+
+    from prototype.app import DECISION_VALUES
+    from src.product.feedback import DECISIONS
+
+    assert set(DECISION_VALUES) == {"Accept", "Edit", "Dismiss"}
+    assert all(value in DECISIONS for value in DECISION_VALUES.values())
 
 
 def test_app_renders_dashboard_without_exception(project_root):

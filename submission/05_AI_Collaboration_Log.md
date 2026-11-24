@@ -148,7 +148,7 @@ These are real, documented issues from this repository. No failures are invented
 ## Final Reflection
 
 **AI accelerated:** drafting (documents, PRD, model card), coding (data pipeline,
-snapshots, models, evaluation, Streamlit prototype), testing (130+ automated checks
+snapshots, models, evaluation, Streamlit prototype), testing (132 automated checks
 including leakage and guardrails), and documentation consistency across phases.
 
 **AI could not replace:** choosing the problem and the wedge; deciding that synthetic
@@ -169,7 +169,8 @@ in the repository.
 | 2026-11-24 | OpenCode | Phase 2 baseline and models | Summarised Phase 2 prompt | Scorecard, LR, HGB pipelines, selection rule | Yes - full suite and regenerated metrics | Corrected baseline threshold-key mismatch | `src/models/`, `config.yaml` |
 | 2026-11-24 | OpenCode | Phase 2 evaluation | Evaluation prompt with metrics and bootstrap | `test_results.json`, calibration, segments, bootstrap | Yes - reran from clean data; identical metrics | Rejected class weighting on validation evidence | `docs/Evaluation_Results.md` |
 | 2026-11-24 | OpenCode | Reason codes | Explainability requirement in Phase 2 prompt | Seven rule-based codes and driver-alignment table | Yes - coverage check (49/50) | Widened rules after 32/50 had no code | `src/models/reasons.py` |
-| 2026-11-24 | Freebuff / Codebuff | Product layer | Final submission prompt | Queue service, recommendations, SQLite feedback store | Yes - 130 tests including ranking and feedback | Kept decision-support boundary; excluded CRM/email | `src/product/` |
+| 2026-11-24 | Freebuff / Codebuff | Product layer | Final submission prompt | Queue service, recommendations, SQLite feedback store | Yes - full suite including ranking and feedback | Kept decision-support boundary; excluded CRM/email | `src/product/` |
 | 2026-11-24 | Freebuff / Codebuff | Streamlit prototype | Four-page MVP requirement | `prototype/app.py` with four pages | Yes - Streamlit AppTest run; dashboard rendered 370/6/29/335 | Simplified visual design; added explicit failure states | `prototype/app.py` |
 | 2026-11-24 | Freebuff / Codebuff | Submission artifacts | Parts 4-15 of final prompt | Executive summary, report, PM pack, ethics, AI logs, deck | Partially - documents reviewed for factual consistency with artifacts | Enforced synthetic-only claims; removed unsupported metrics | `submission/`, `presentation/` |
-| 2026-11-24 | Freebuff / Codebuff | README, diagrams, GitHub readiness | Final prompt | README, PlantUML workflows, upload instructions | Yes - commands rerun; diagrams syntax-checked where tooling exists | Final review before submission | `README.md`, `diagrams/`, `GITHUB_UPLOAD_INSTRUCTIONS.md` |
+| 2026-11-24 | Freebuff / Codebuff | README, diagrams, GitHub readiness | Final prompt | README, PlantUML workflows, upload instructions | Yes - commands rerun; diagrams syntax-checked where tooling exists | Final review before submission | `README.md`, `diagrams/`, local git history |
+| 2026-11-24 | Freebuff / Codebuff | Submission packaging and QA | "Prepare everything for submission, capture screenshots" | Six prototype screenshots, rendered diagram PNGs, reviewer-decision save fix | Yes - each page driven in a real browser; 132 tests pass | Accepted the save-crash fix with a regression test; refused to invent a GitHub URL | `screenshots/`, `diagrams/*.png`, `prototype/app.py` |

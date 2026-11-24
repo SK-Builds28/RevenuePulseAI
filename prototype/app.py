@@ -24,7 +24,6 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.product.feedback import ReviewFeedbackStore
-from src.product.recommendations import ALLOWED_ACTIONS
 from src.product.review import (
     RISK_BANDS,
     DataUnavailableError,
@@ -47,10 +46,13 @@ PAGES = (
     "Human Review",
 )
 
+# Reviewer-facing radio labels mapped to the audit log's stored values.
+DECISION_VALUES = {"Accept": "accepted", "Edit": "edited", "Dismiss": "dismissed"}
+
 DISCLAIMER = (
-    "This score is a prioritization signal, not a statement that the customer "
-    "will churn. All data in this prototype is synthetic, so no real-world "
-    "performance is implied."
+    "AI-assisted prioritization only. Scores indicate estimated revenue-decline "
+    "risk and do not confirm customer churn. Prototype results are based on "
+    "synthetic data and do not represent real-world performance."
 )
 
 
@@ -95,10 +97,16 @@ def queue_table(queue: pd.DataFrame) -> pd.DataFrame:
             "Segment": queue["segment"].astype(str),
             "Risk probability": queue["risk_probability"].round(3),
             "Risk band": queue["risk_band"].astype(str),
-            "Recent revenue (3m mean)": queue["revenue_mean_3m"].round(0),
+            "Recent revenue (3m mean)": queue["revenue_mean_3m"].map(
+                lambda value: f"{value:,.0f}" if pd.notna(value) else "n/a"
+            ),
             "Revenue trend (3m)": queue["revenue_trend_3m_pct"].map(_format_percentage),
-            "Engagement (3m mean)": queue["engagement_mean_3m"].round(1),
-            "Days since activity": queue["days_since_activity_last"].round(1),
+            "Engagement (3m mean)": queue["engagement_mean_3m"].map(
+                lambda value: f"{value:.1f}" if pd.notna(value) else "n/a"
+            ),
+            "Days since activity": queue["days_since_activity_last"].map(
+                lambda value: f"{value:.1f}" if pd.notna(value) else "n/a"
+            ),
             "Primary reason": queue["primary_reason"].astype(str),
             "Review status": queue["review_status"].astype(str),
         }
@@ -148,8 +156,8 @@ def sidebar(config) -> tuple[str, str]:
     )
     st.sidebar.divider()
     st.sidebar.caption(
-        "Synthetic data demo. Scores come from the frozen Phase 2 "
-        "histogram gradient boosting model."
+        "Synthetic data demo. Risk scores are generated using the frozen Phase 2 "
+        "Histogram Gradient Boosting model."
     )
     return page, snapshot
 
@@ -433,7 +441,7 @@ def page_review(config, snapshot: str) -> None:
     st.divider()
     decision = st.radio(
         "Reviewer decision",
-        options=["Accept", "Edit", "Dismiss"],
+        options=list(DECISION_VALUES),
         horizontal=True,
     )
     edited_text = ""
@@ -462,7 +470,7 @@ def page_review(config, snapshot: str) -> None:
                 risk_band=str(row["risk_band"]),
                 model_name=str(bundle.get("selected_model", "")),
                 ai_recommendation=recommendation["action"],
-                decision=decision.lower(),
+                decision=DECISION_VALUES[decision],
                 edited_recommendation=edited_text.strip() or None,
                 reviewer_note=note.strip() or None,
                 reviewer="demo-reviewer",
@@ -471,7 +479,6 @@ def page_review(config, snapshot: str) -> None:
                 f"Decision saved (record #{row_id}). The review log is local to "
                 f"this machine: {config.feedback_db_path}"
             )
-            st.rerun()
 
     st.divider()
     st.subheader("Review log")
@@ -505,7 +512,7 @@ def main() -> None:
     config = guard(get_config, str(CONFIG_PATH))
     page, snapshot = sidebar(config)
     st.sidebar.caption(
-        "Allowed suggested actions: " + ", ".join(ALLOWED_ACTIONS)
+        "Suggested actions are rule-based and require human review before use."
     )
 
     if page == "Executive Dashboard":
