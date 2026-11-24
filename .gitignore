@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# Environment and secrets (LLM stays disabled by default)
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Generated / large data
+data/processed/*
+!data/processed/.gitkeep
+data/raw/
+*.parquet
+*.joblib
+*.pkl
+*.db
+*.sqlite
+*.sqlite3
+
+# Model and evaluation artifacts (reproducible from the documented commands)
+artifacts/
+
+# Runtime
+runtime/*
+!runtime/.gitkeep
+logs/
+*.log
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# OneDrive / Office lock files
+~$*
+*.tmp

@@ -1,0 +1,50 @@
+@startuml
+title RevenuePulse AI - Phase 1 data pipeline
+
+skinparam defaultFontName Arial
+skinparam componentStyle rectangle
+
+actor "Analyst / Reviewer" as User
+
+package "Configuration" {
+  [config.yaml] as Config
+  [Validated config loader] as Loader
+}
+
+package "Data foundation" {
+  [Synthetic generator] as Generator
+  [Raw account-month CSV] as Raw
+  [Schema + quality checks] as Quality
+  [Point-in-time snapshot builder] as Snapshots
+  [Feature allow-list + label] as Features
+}
+
+package "Phase 2 (not built)" {
+  [Rule baseline] as Baseline
+  [Logistic regression] as LR
+  [Gradient boosting] as GBM
+  [Evaluation + calibration] as Eval
+}
+
+Config --> Loader
+Loader --> Generator
+Generator --> Raw
+Raw --> Quality
+Quality --> Snapshots
+Snapshots --> Features
+Features --> Baseline
+Features --> LR
+Features --> GBM
+Baseline --> Eval
+LR --> Eval
+GBM --> Eval
+User --> Quality : validates
+User --> Snapshots : runs
+
+note bottom of Features
+  Features use only month <= snapshot_date.
+  The label uses only the future 3-month window.
+  account_id is never a model feature.
+end note
+
+@enduml

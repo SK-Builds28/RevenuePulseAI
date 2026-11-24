@@ -1,0 +1,169 @@
+# RevenuePulse AI - Phase 2 configuration
+# All values below are synthetic-data assumptions unless marked as a hypothesis.
+# Change them here rather than scattering constants through the code.
+
+project:
+  name: "RevenuePulse AI"
+  phase: 2
+  version: "phase2-1.0.0"
+  currency_label: "synthetic currency units"
+
+random:
+  seed: 42
+
+synthetic:
+  n_accounts: 400
+  n_months: 36
+  start_month: "2023-01"
+  segment_mix:
+    SMB: 0.50
+    Mid-Market: 0.35
+    Enterprise: 0.15
+  segment_base_revenue:
+    SMB: 18000
+    Mid-Market: 55000
+    Enterprise: 180000
+  segment_avg_transaction_value:
+    SMB: 450
+    Mid-Market: 1500
+    Enterprise: 6000
+  archetype_mix:
+    stable: 0.30
+    growing: 0.10
+    declining: 0.30
+    seasonal: 0.15
+    noisy: 0.15
+  missing_rates:
+    engagement_score: 0.03
+    days_since_last_activity: 0.02
+
+  # Small, committed dataset used for demos and smoke tests.
+  demonstration:
+    n_accounts: 60
+    n_months: 36
+    seed: 20260101
+    output_path: "data/sample/account_month_sample.csv"
+
+label:
+  # Predict whether the next 3 monthly averages fall materially below the
+  # trailing 3-month average. This is a revenue-decline proxy, not confirmed churn.
+  prediction_horizon_months: 3
+  reference_window_months: 3
+  decline_threshold_pct: 20.0
+  minimum_reference_revenue: 5000.0
+  minimum_history_months: 6
+  target_column: "future_revenue_decline"
+  drop_rows_below_minimum_revenue: true
+
+snapshots:
+  frequency: "quarter_end"
+  feature_windows_months: [3, 6, 12]
+  drop_incomplete_horizon: true
+
+splits:
+  # Quarter-end snapshots on or before each date. Time ordering is mandatory.
+  train_end: "2024-09-30"
+  validation_end: "2025-03-31"
+  test_end: "2025-09-30"
+
+risk:
+  # Probability thresholds for the review queue. Calibration work is Phase 2.
+  high_threshold: 0.65
+  medium_threshold: 0.35
+
+evaluation:
+  precision_at_k: [10, 25, 50]
+  k_fractions: [0.10, 0.20]
+  # The primary operational capacity assumption: a manager reviews 50 ranked
+  # snapshot-accounts per evaluation window.
+  primary_k: 50
+  model_selection_metric: "precision_at_k"
+  selection_tiebreak_metric: "pr_auc"
+  # If HGB is best but LR is within this absolute P@K margin, prefer LR for
+  # interpretability. This is a decision rule, not a test-set search.
+  interpretability_margin: 0.02
+  # Placeholder only. Do not treat as a commercial success claim.
+  false_alarm_tolerance: 0.40
+  false_alarm_tolerance_status: "hypothesis_pending_pilot_validation"
+  bootstrap_iterations: 1000
+  bootstrap_seed: 42
+  calibration_bins: 10
+
+reasons:
+  # Account-level reason codes. Each threshold is evaluated on the account's own
+  # point-in-time features; missing values never fire a code. These thresholds
+  # describe what the model's inputs look like and are NOT causal attributions.
+  revenue_decline_3m_pct: -0.05
+  revenue_decline_6m_pct: -0.05
+  # The synthetic generator associates recent growth with later give-back, so the
+  # fitted booster uses this direction. It is a property of the synthetic data.
+  revenue_growth_6m_pct: 0.15
+  transaction_decline_3m_pct: -0.05
+  inactivity_days: 30.0
+  engagement_decline_3m_pct: -0.05
+  low_engagement_level: 40.0
+  limit: 4
+
+baseline:
+  # Four business-readable signals. Scores are additive; max score is 7.0.
+  weights:
+    revenue_decline: 2.0
+    transaction_decline: 2.0
+    inactivity: 1.5
+    engagement_decline: 1.5
+  thresholds:
+    revenue_decline_pct: -0.05
+    transaction_decline_pct: -0.05
+    inactivity_days: 30.0
+    engagement_decline_pct: -0.05
+  high_risk_score: 3.0
+
+models:
+  primary: "logistic_regression"
+  challenger: "hist_gradient_boosting"
+  random_state: 42
+  binary_threshold: 0.50
+  # Class imbalance (13.7% positive in train) is handled through the metric set
+  # (PR-AUC and Precision@K rather than accuracy), not through reweighting.
+  # A validation-only comparison of class_weight null vs "balanced" showed no
+  # consistent ranking gain (LR P@50 0.320 -> 0.280, HGB 0.380 -> 0.400,
+  # PR-AUC unchanged) but materially worse Brier scores (0.085 -> 0.148,
+  # 0.086 -> 0.114). No reweighting keeps the probability scale interpretable.
+  logistic_regression:
+    C: 1.0
+    max_iter: 2000
+    class_weight: null
+    solver: "lbfgs"
+  hist_gradient_boosting:
+    learning_rate: 0.05
+    max_iter: 200
+    max_leaf_nodes: 15
+    min_samples_leaf: 20
+    l2_regularization: 1.0
+    class_weight: null
+    early_stopping: false
+
+features:
+  opportunity_scoring: false
+  llm_recommendations: false
+  synthetic_banner: true
+
+llm:
+  enabled: false
+  provider: "none"
+
+feedback:
+  # Local audit log for human accept / edit / dismiss decisions (Phase 3 prototype).
+  # SQLite, no network access, git-ignored.
+  database_path: "runtime/review_feedback.db"
+
+artifacts:
+  model_dir: "artifacts/model"
+  evaluation_dir: "artifacts/evaluation"
+
+paths:
+  sample_data: "data/sample/account_month_sample.csv"
+  full_data: "data/processed/account_month_full.csv"
+  snapshots: "data/processed/snapshots.csv"
+  full_snapshots: "data/processed/snapshots_full.csv"
+  sample_snapshots: "data/processed/snapshots_sample.csv"
